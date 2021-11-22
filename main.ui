@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>501</width>
-    <height>300</height>
+    <height>360</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,14 +31,46 @@
     <string>Кофеек</string>
    </property>
   </widget>
-  <widget class="QTableView" name="tableView">
+  <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>70</y>
-     <width>421</width>
-     <height>191</height>
+     <y>60</y>
+     <width>131</width>
+     <height>23</height>
     </rect>
+   </property>
+   <property name="text">
+    <string>Изменить/Создать</string>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableWidget">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>100</y>
+     <width>421</width>
+     <height>192</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>310</y>
+     <width>381</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Выделите нужные строки и нажми &quot;Изменить/Создать&quot;
+для их редактирования</string>
    </property>
   </widget>
  </widget>
