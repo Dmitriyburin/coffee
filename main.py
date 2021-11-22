@@ -6,15 +6,19 @@ from PyQt5.QtCore import Qt
 from PyQt5 import uic
 import sqlite3
 
+from UI.main_ui import Ui_Form
+from UI.addEditCoffeeForm import Ui_Form2
 
-class Main(QWidget):
+
+class Main(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        uic.loadUi('main.ui', self)
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.setupUi(self)
+        self.con = sqlite3.connect("data/coffee.sqlite")
+        self.pushButton.clicked.connect(self.change)
         self.pushButton.clicked.connect(self.change)
         cur = self.con.cursor()
         result = cur.execute("SELECT * FROM coffee").fetchall()
@@ -39,14 +43,13 @@ class Main(QWidget):
             self.change_w.show()
 
 
-class Change(QWidget):
+class Change(QWidget, Ui_Form2):
     def __init__(self, rows):
         super().__init__()
         self.initUI(rows)
 
     def initUI(self, rows):
-        uic.loadUi('addEditCoffeeForm.ui', self)
-
+        self.setupUi(self)
         self.modified = {}
         self.titles = None
         self.tableWidget.itemChanged.connect(self.item_changed)
@@ -54,7 +57,7 @@ class Change(QWidget):
         self.price.setMaximum(1000000)
         self.amount.setMaximum(1000000)
         self.rows = rows
-        self.con = sqlite3.connect("coffee.sqlite")
+        self.con = sqlite3.connect("data/coffee.sqlite")
         self.rows = rows
         cur = self.con.cursor()
         result = cur.execute("SELECT * FROM coffee WHERE id IN ({})".format(
@@ -100,19 +103,20 @@ class Change(QWidget):
 
         try:
             print('ok')
-            sort_name = self.sort.text()
+            sort_name = self.sort.text() if len(self.sort.text()) != 0 else None
             st = self.combo_1.currentText()
             v = self.combo_2.currentText()
-            taste = self.taste.text()
+            taste = self.taste.text() if len(self.taste.text()) != 0 else None
             price = self.price.text()
             amount = self.amount.text()
             cur = self.con.cursor()
-            print('?')
-            que = 'INSERT INTO coffee (sort_name, degree_roasting, grains_type, taste, price, amount)'\
-                  'VALUES ("{}", "{}", "{}", "{}", "{}", "{}")'.format(sort_name, st, v, taste, price, amount)
-            cur.execute(que)
-            self.con.commit()
-            QMessageBox.information(self, 'Информация', 'Успешно добавлено!')
+            if sort_name is not None and taste is not None:
+                que = 'INSERT INTO coffee (sort_name, degree_roasting, grains_type, taste, price, amount)'\
+                      'VALUES ("{}", "{}", "{}", "{}", "{}", "{}")'.format(sort_name, st, v, taste, price, amount)
+                print(que)
+                cur.execute(que)
+                self.con.commit()
+                QMessageBox.information(self, 'Информация', 'Успешно добавлено!')
         except Exception as error:
             print(error)
 
